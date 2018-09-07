@@ -170,4 +170,30 @@ describe('Injector', () => {
 
     expect(get('MyOtherInstance')).toBe(get('MyOtherInstance'))
   });
+
+  it('should initialize func of inner instance', () => {
+    const myFn = jest.fn();
+    class MyInstance {
+      constructor() {
+        this.myOtherInstance = get('MyOtherInstance');
+      }
+    }
+
+    class MyOtherInstance {
+      constructor() {
+        myFn();
+      }
+    }
+
+    initialize({
+      providers: [
+        MyInstance,
+        MyOtherInstance
+      ]
+    });
+
+    const myInstance = get('MyInstance');
+
+    expect(myFn.mock.calls.length).toBe(1);
+  });
 });
