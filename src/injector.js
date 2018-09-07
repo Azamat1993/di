@@ -5,15 +5,7 @@ let loadedInstances = {};
 const initializeProviders = (providers) => {
   if (providers) {
     providers.forEach((provider) => {
-      if (provider.name === 'hasOwnProperty') {
-        throw 'Provider can\'t have hasOwnProperty name';
-      }
-
-      if (loadedProviders.hasOwnProperty(provider.name)) {
-        throw 'Provider ' + provider.name + ' already registered';
-      }
-
-      loadedProviders[provider.name] = provider;
+      initEntity(provider, loadedProviders);
     })
   }
 }
@@ -21,7 +13,7 @@ const initializeProviders = (providers) => {
 const initializeInstances = (instances) => {
   if (instances) {
     instances.forEach((instance) => {
-      loadedInstances[instance.name] = instance;
+      initEntity(instance, loadedInstances)
     })
   }
 }
@@ -53,6 +45,19 @@ const has = (name) => {
 const cleanUp = () => {
   loadedProviders = {};
   initializedProviders = {};
+  loadedInstances = {};
+}
+
+function initEntity(entity, cache) {
+  if (entity.name === 'hasOwnProperty') {
+    throw 'Provider can\'t have hasOwnProperty name';
+  }
+
+  if (cache.hasOwnProperty(entity.name)) {
+    throw 'Provider ' + entity.name + ' already registered';
+  }
+
+  cache[entity.name] = entity;
 }
 
 module.exports = {

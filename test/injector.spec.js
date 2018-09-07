@@ -231,4 +231,28 @@ describe('Injector', () => {
       });
     }).toThrow();
   });
+
+  it('should throw if already existing instance injectring from other init', () => {
+    class MyInstance {}
+
+    initialize({
+      instances: [MyInstance]
+    })
+
+    expect(() => {
+      initialize({
+        instances: [MyInstance]
+      });
+    }).toThrow();
+  });
+
+  it('should throw if instance name is hasOwnProperty', () => {
+    class hasOwnProperty {}
+
+    expect(() => {
+      initialize({
+        instances: [hasOwnProperty]
+      })
+    }).toThrow();
+  });
 });
