@@ -9,6 +9,10 @@ const initializeProviders = (providers) => {
         throw 'Provider can\'t have hasOwnProperty name';
       }
 
+      if (loadedProviders.hasOwnProperty(provider.name)) {
+        throw 'Provider ' + provider.name + ' already registered';
+      }
+
       loadedProviders[provider.name] = provider;
     })
   }
@@ -18,7 +22,7 @@ const initializeInstances = (instances) => {
   if (instances) {
     instances.forEach((instance) => {
       loadedInstances[instance.name] = instance;
-    })  
+    })
   }
 }
 

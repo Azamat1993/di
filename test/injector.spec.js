@@ -15,6 +15,10 @@ describe('Injector', () => {
     expect(initialize).toBeDefined();
   });
 
+  it('initialize should be single', () => {
+    expect(require('../src/injector').initialize).toBe(require('../src/injector').initialize);
+  });
+
   it('get should be defined', () => {
     expect(get).toBeDefined();
   });
@@ -195,5 +199,36 @@ describe('Injector', () => {
     const myInstance = get('MyInstance');
 
     expect(myFn.mock.calls.length).toBe(1);
+  });
+
+  it('should be able to register from multiple init functions', () => {
+    class MySingleton {}
+
+    initialize({
+      providers: [MySingleton]
+    })
+
+    class MyOtherSingleton {}
+
+    initialize({
+      providers: [MyOtherSingleton]
+    });
+
+    expect(has('MySingleton')).toBe(true);
+    expect(has('MyOtherSingleton')).toBe(true);
+  });
+
+  it('should throw if already existing provider injectring from other init', () => {
+    class MySingleton {}
+
+    initialize({
+      providers: [MySingleton]
+    })
+
+    expect(() => {
+      initialize({
+        providers: [MySingleton]
+      });
+    }).toThrow();
   });
 });
