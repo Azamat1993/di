@@ -127,4 +127,47 @@ describe('Injector', () => {
 
     expect(myFn.mock.calls.length).toBe(3);
   });
+
+  it('should add ability to inject other providers into provider', () => {
+    class MyInstance { }
+
+    class MyOtherInstance {
+      constructor() {
+        this.myInstance = get('MyInstance');
+      }
+    }
+
+    initialize({
+      providers: [
+        MyInstance,
+        MyOtherInstance
+      ]
+    });
+    const myOtherInstance = get('MyOtherInstance');
+
+    expect(get('MyInstance')).toBe(myOtherInstance.myInstance);
+  });
+
+  it('should add ability to inject other providers into provider randomly', () => {
+    class MyInstance {
+      constructor() {
+        this.myOtherInstance = get('MyOtherInstance');
+      }
+    }
+
+    class MyOtherInstance {
+
+    }
+
+    initialize({
+      providers: [
+        MyInstance,
+        MyOtherInstance
+      ]
+    });
+
+    const myInstance = get('MyInstance');
+
+    expect(get('MyOtherInstance')).toBe(get('MyOtherInstance'))
+  });
 });
