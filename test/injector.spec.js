@@ -1,7 +1,4 @@
-var initialize = require('../src/injector').initialize;
-var get = require('../src/injector').get;
-var has = require('../src/injector').has;
-var cleanUp = require('../src/injector').cleanUp;
+var {initialize, get, has, cleanUp} = require('../src/injector')
 
 class MySingleton {}
 
