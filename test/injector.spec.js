@@ -252,4 +252,44 @@ describe('Injector', () => {
       })
     }).toThrow();
   });
+
+  it('gives ability to pass data into instance\s constructor', () => {
+    let myVar;
+    class MyInstance {
+      constructor(e1) {
+        myVar = e1;
+      }
+    }
+
+    initialize({
+      instances: [MyInstance]
+    })
+
+    get('MyInstance', 42);
+
+    expect(myVar).toBe(42);
+  });
+
+  it('gives ability to pass a lot of data', () => {
+    let myVar;
+    let myVar2;
+    let myVar3;
+    class MyInstance {
+      constructor(e1, e2, e3) {
+        myVar = e1;
+        myVar2 = e2;
+        myVar3 = e3;
+      }
+    }
+
+    initialize({
+      instances: [MyInstance]
+    })
+
+    get('MyInstance', 42, 43, 44);
+
+    expect(myVar).toBe(42);
+    expect(myVar2).toBe(43);
+    expect(myVar3).toBe(44);
+  });
 });

@@ -18,13 +18,13 @@ const initializeInstances = (instances) => {
   }
 }
 
-const getService = (name) => {
+const getService = (name, rest) => {
   if (initializedProviders.hasOwnProperty(name)) {
     return initializedProviders[name];
   } else if (loadedProviders.hasOwnProperty(name)) {
     return initializedProviders[name] = new loadedProviders[name]();
   } else if (loadedInstances.hasOwnProperty(name)) {
-    return new loadedInstances[name];
+    return new loadedInstances[name](...rest);
   } else {
     throw 'Unknown provider: ' + name ;
   }
@@ -34,8 +34,8 @@ const initialize = ({providers, instances}) => {
   initializeProviders(providers);
   initializeInstances(instances);
 }
-const get = (name) => {
-  return getService(name);
+const get = (name, ...rest) => {
+  return getService(name, rest);
 }
 
 const has = (name) => {
